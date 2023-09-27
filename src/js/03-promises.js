@@ -1,23 +1,19 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-
 import Notiflix from 'notiflix';
 
 const form = document.querySelector('.form');
-
 form.addEventListener('submit', e => {
   e.preventDefault();
   const delay = parseInt(form.elements.delay.value);
   const step = parseInt(form.elements.step.value);
   const amount = parseInt(form.elements.amount.value);
-
   if (delay <= 0 || step < 0 || amount < 0) {
     return Notiflix.Report.warning(
-      'Opsss....🧟‍♂️',
+      'Opsss',
       'The number must be greater than 0',
       'Try again'
     );
   }
-
   for (let i = 0; i < amount; i++) {
     createPromise(i, delay + step * i)
       .then(({ position, delay }) => {
@@ -34,14 +30,13 @@ form.addEventListener('submit', e => {
 });
 
 function createPromise(position, delay) {
-  return new Promise((res, rej) => {
+  return new Promise((resolve, reject) => {
     const shouldResolve = Math.random() > 0.3;
-
     setTimeout(() => {
       if (shouldResolve) {
-        res({ position, delay });
+        resolve({ position, delay });
       } else {
-        rej({ position, delay });
+        reject({ position, delay });
       }
     }, delay);
   });
